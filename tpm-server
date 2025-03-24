@@ -1,0 +1,43 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          tpm-server
+# Required-Start:    $local_fs $network
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start tpm-server at boot time
+# Description:       Enable tpm-server service provided by tpm-server.
+### END INIT INFO
+
+NAME=tpm-server
+DAEMON=/usr/local/bin/tpm_server
+PIDFILE=/var/run/$NAME.pid
+
+start() {
+    echo "Starting tpm-server..."
+    start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON
+}
+
+stop() {
+    echo "Stopping tpm-server..."
+    start-stop-daemon --stop --quiet --pidfile $PIDFILE
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0
